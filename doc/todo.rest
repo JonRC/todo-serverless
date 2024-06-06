@@ -1,4 +1,4 @@
-# @name postTodo
+# @name createTodo
 POST http://localhost:3000/todos
 Content-Type: application/json
 
@@ -9,13 +9,17 @@ Content-Type: application/json
 }
 
 ###
+# @name listTodos
 GET http://localhost:3000/todos
 
 ###
-GET http://localhost:3000/todos/{{postTodo.response.body.todo.id}}
+# @name getTodo
+GET http://localhost:3000/todos/{{createTodo.response.body.todo.id}}
 
 ###
-PATCH http://localhost:3000/todos/{{postTodo.response.body.todo.id}}/complete
+# @name completeTodo
+PATCH http://localhost:3000/todos/{{createTodo.response.body.todo.id}}/complete
 
 ###
-DELETE http://localhost:3000/todos/{{postTodo.response.body.todo.id}}
+# @name deleteTodo
+DELETE http://localhost:3000/todos/{{createTodo.response.body.todo.id}}

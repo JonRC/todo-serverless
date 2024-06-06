@@ -18,7 +18,7 @@ export const handler = createHandler(async (event, context) => {
   if (!todo)
     return {
       statusCode: 404,
-      body: JSON.stringify({ message: "Todo not found" }),
+      body: { message: "Todo not found" },
     };
 
   return {
