@@ -1,0 +1,78 @@
+service: todo-service
+
+provider:
+  name: aws
+  architecture: x86_64
+  runtime: nodejs18.x
+  timeout: 6
+
+functions:
+  postTodos:
+    handler: ./src/Handler/postTodos.handler
+    events:
+      - httpApi:
+          method: POST
+          path: /todos
+  getTodosId:
+    handler: ./src/Handler/getTodosId.handler
+    events:
+      - httpApi:
+          method: GET
+          path: /todos/{id}
+  getTodos:
+    handler: ./src/Handler/getTodos.handler
+    events:
+      - httpApi:
+          method: GET
+          path: /todos
+  patchTodoIdComplete:
+    handler: ./src/Handler/patchTodoIdComplete.handler
+    events:
+      - httpApi:
+          method: PATCH
+          path: /todos/{id}/complete
+  deleteTodoId:
+    handler: ./src/Handler/deleteTodoId.handler
+    events:
+      - httpApi:
+          method: DELETE
+          path: /todos/{id}
+
+plugins:
+  - serverless-esbuild
+  - serverless-dynamodb
+  - serverless-offline
+
+resources:
+  Resources:
+    todoTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: todoTable
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+build:
+  esbuild: false
+
+custom:
+  dynamodb:
+  # If you only want to use DynamoDB Local in some stages, declare them here
+    stages:
+      - dev
+    start:
+      docker: true
+      port: 8000
+      inMemory: true
+      migrate: true
+      seed: true
+      convertEmptyValues: true
+    # Uncomment only if you already have a DynamoDB running locally
+    # noStart: true

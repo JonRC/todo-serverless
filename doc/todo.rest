@@ -1,0 +1,21 @@
+# @name postTodo
+POST http://localhost:3000/todos
+Content-Type: application/json
+
+{
+  "title": "Serverless challenge",
+  "description": "Create a serverless application using Serverless Framework",
+  "dueDate": "2024-06-05"
+}
+
+###
+GET http://localhost:3000/todos
+
+###
+GET http://localhost:3000/todos/{{postTodo.response.body.todo.id}}
+
+###
+PATCH http://localhost:3000/todos/{{postTodo.response.body.todo.id}}/complete
+
+###
+DELETE http://localhost:3000/todos/{{postTodo.response.body.todo.id}}
